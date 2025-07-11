@@ -1,16 +1,10 @@
 import pytest
 from src.api_tester import perform_api_test
+from main import test_results
 
-# Lấy cấu hình môi trường từ pytest fixture
-@pytest.fixture
-def env_config(pytestconfig):
-    return pytestconfig.env_config
-
-def test_get_users(env_config):
-    result = perform_api_test(env_config, "/users", expected_status=200)
-    assert result["success"], f"Test failed: {result['error_message']}"
-
-def test_create_user(env_config):
-    payload = {"name": "Test User", "email": "test@example.com"}
-    result = perform_api_test(env_config, "/users", method="POST", payload=payload, expected_status=201)
-    assert result["success"], f"Test failed: {result['error_message']}"
+def test_get_status(env_config):
+    # Test API với token cụ thể
+    custom_headers = {"Authorization": "Bearer Pno6CeK44Y5KCiF8Qul0vd99ojmzNWxJtLiHM14KMJg"}
+    result = perform_api_test(env_config, "/statuses/114809714727261565", method="GET", expected_status=200, custom_headers=custom_headers)
+    test_results.append(result)
+    assert result["success"], f"Kiểm thử thất bại: {result['error_message']}"
