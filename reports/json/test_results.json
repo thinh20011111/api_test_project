@@ -1,0 +1,12 @@
+[
+  {
+    "test_name": "test_user_flow",
+    "status": "PASS",
+    "response_code": 200,
+    "url": "https://lab-sn.emso.vn/api/v1/me",
+    "method": "GET",
+    "headers": "{\n  \"accept\": \"application/json, text/plain, */*\",\n  \"accept-language\": \"vi-VN,vi;q=0.9,fr-FR;q=0.8,fr;q=0.7,en-US;q=0.6,en;q=0.5\",\n  \"origin\": \"https://lab-fe.emso.vn\",\n  \"priority\": \"u=1, i\",\n  \"referer\": \"https://lab-fe.emso.vn/\",\n  \"sec-ch-ua\": \"\\\"Not)A;Brand\\\";v=\\\"8\\\", \\\"Chromium\\\";v=\\\"138\\\", \\\"Google Chrome\\\";v=\\\"138\\\"\",\n  \"sec-ch-ua-mobile\": \"?0\",\n  \"sec-ch-ua-platform\": \"\\\"Windows\\\"\",\n  \"sec-fetch-dest\": \"empty\",\n  \"sec-fetch-mode\": \"cors\",\n  \"sec-fetch-site\": \"same-site\",\n  \"user-agent\": \"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36\",\n  \"authorization\": \"Bearer 3HoprhqqTHNNS7JvqWh2_CMKtJKK2FsQYslLSnTFzHs\"\n}",
+    "response_body": "{\n  \"id\": \"108813322749055123\",\n  \"username\": \"hungnguyen12e\",\n  \"acct\": \"hungnguyen12e\",\n  \"display_name\": \"Hùng Nguyễn Đức\",\n  \"email\": \"emsomanagerhd@gmail.com\",\n  \"locked\": false,\n  \"bot\": false,\n  \"discoverable\": null,\n  \"group\": false,\n  \"created_at\": \"2022-08-13T00:00:00.000+07:00\",\n  \"earn_money\": false,\n  \"gender\": null,\n  \"note\": \"<p></p>\",\n  \"followers_count\": 61,\n  \"following_count\": 90,\n  \"statuses_count\": 41772,\n  \"last_status_at\": \"2025-07-11\",\n  \"friends_count\": 54,\n  \"theme\": \"light\",\n  \"identity_verification\": true,\n  \"avatar_static\": \"https://lab-sn.emso.vn/avatars/original/missing.png\",\n  \"updated_at\": \"2025-07-09T09:22:15.928+07:00\",\n  \"moments_count\": 15695,\n  \"certified\": true,\n  \"first_update_profile\": true,\n  \"reset_password_required\": false,\n  \"admin\": false,\n  \"moderator\": false,\n  \"partner_roll\": null,\n  \"banner\": {\n    \"id\": \"114097812162300601\",\n    \"type\": \"image\",\n    \"url\": \"https://cdn4.emso.vn/sn-web/media_attachments/files/114/097/812/162/300/601/ori...",
+    "timestamp": "2025-07-11 17:14:41"
+  }
+]
