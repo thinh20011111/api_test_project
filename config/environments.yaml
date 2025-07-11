@@ -1,0 +1,10 @@
+environments:
+  dev:
+    api_base_url: "https://api.dev.example.com"
+    timeout: 10
+  staging:
+    api_base_url: "https://api.staging.example.com"
+    timeout: 15
+  production:
+    api_base_url: "https://api.example.com"
+    timeout: 20
