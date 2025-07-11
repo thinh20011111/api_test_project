@@ -15,17 +15,19 @@ def api_client(pytestconfig):
 def reporter():
     return ReportGenerator()
 
-@pytest.mark.env("lab")
-@pytest.mark.env("staging")
-@pytest.mark.env("prod")
+@pytest.mark.env_dev
+@pytest.mark.env_develop
+@pytest.mark.env_staging
+@pytest.mark.env_prod
 def test_get_me(api_client, reporter):
-    response = api_client.get("api/v1/me")
+    response, request_info = api_client.get("api/v1/me")
     test_name = "test_get_me"
     
     try:
         assert response.status_code == 200
-        assert "user" in response.json()
-        reporter.add_result(test_name, "PASS", response.status_code)
+        assert "acct" in response.json()  # Kiểm tra key 'acct'
+        assert response.json()["acct"] == "hungnguyen12e"  # Kiểm tra giá trị cụ thể
+        reporter.add_result(test_name, "PASS", response.status_code, request_info, response.json())
     except AssertionError:
-        reporter.add_result(test_name, "FAIL", response.status_code)
+        reporter.add_result(test_name, "FAIL", response.status_code, request_info, response.json())
         raise

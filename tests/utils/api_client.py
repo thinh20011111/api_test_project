@@ -10,7 +10,7 @@ class APIClient:
             "accept-language": "vi-VN,vi;q=0.9,fr-FR;q=0.8,fr;q=0.7,en-US;q=0.6,en;q=0.5",
             "origin": "https://lab-fe.emso.vn",
             "priority": "u=1, i",
-            "referer": "https://lab-fe.emso.vn",
+            "referer": "https://lab-fe.emso.vn/",
             "sec-ch-ua": '"Not)A;Brand";v="8", "Chromium";v="138", "Google Chrome";v="138"',
             "sec-ch-ua-mobile": "?0",
             "sec-ch-ua-platform": '"Windows"',
@@ -32,10 +32,10 @@ class APIClient:
         url = f"{self.base_url}/{endpoint}"
         headers = self.get_headers(custom_headers)
         response = requests.get(url, headers=headers, params=params)
-        return response
+        return response, {"url": url, "method": "GET", "headers": headers}
 
     def post(self, endpoint, data=None, custom_headers=None):
         url = f"{self.base_url}/{endpoint}"
         headers = self.get_headers(custom_headers)
         response = requests.post(url, headers=headers, json=data)
-        return response
+        return response, {"url": url, "method": "POST", "headers": headers}
