@@ -1,0 +1,9 @@
+develop:
+  base_url: "https://lab-sn.emso.vn"
+  auth_token: "3HoprhqqTHNNS7JvqWh2_CMKtJKK2FsQYslLSnTFzHs"
+staging:
+  base_url: "https://api-staging.emso.vn"
+  auth_token: "staging_token_dynamic"
+prod:
+  base_url: "https://prod-sn.emso.vn"
+  auth_token: "nAxErdlDiQg8M45lIlZqsiIbf_gG7uRrip8YCL4EtLg"
