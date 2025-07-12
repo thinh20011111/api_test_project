@@ -1,5 +1,7 @@
 # tests/utils/api_client.py
 import requests
+import logging
+import time
 
 class APIClient:
     def __init__(self, base_url, auth_token):
@@ -27,39 +29,63 @@ class APIClient:
         if custom_headers:
             headers.update(custom_headers)
         return headers
+    
+    def get_time_duration(self, start_time, end_time):
+        """Tính thời gian thực thi của request (giây)."""
+        return end_time - start_time  # Trả về giây thay vì mili giây
 
     def get(self, endpoint, params=None, custom_headers=None):
         url = f"{self.base_url}/{endpoint}"
         headers = self.get_headers(custom_headers)
-        response = requests.get(url, headers=headers, params=params)
-        return response, {"url": url, "method": "GET", "headers": headers}
-
-    def post(self, endpoint, data=None, custom_headers=None):
-        url = f"{self.base_url}/{endpoint}"
-        headers = self.get_headers(custom_headers)
-        response = requests.post(url, headers=headers, json=data)
-
-    def get_v1_statuses_114820978318185384(self, endpoint, data=None, custom_headers=None):
-        url = f"{self.base_url}/{endpoint}"
-        headers = self.get_headers(custom_headers)
-        response = requests.get(url, headers=headers, json=data)
-        return response, {"url": url, "method": "GET", "headers": headers}
+        start_time = time.time()
+        logging.debug(f"Sending GET request to {url}")
+        response = requests.get(url, headers=headers, params=params, allow_redirects=True)
+        end_time = time.time()
+        time_duration = self.get_time_duration(start_time, end_time)
+        logging.debug(f"Received response from {url} with status {response.status_code}, duration {time_duration:.2f} ms")
+        return response, {"url": url, "method": "GET", "headers": headers, "time_duration": time_duration}
 
     def post_media(self, endpoint, files=None, data=None, custom_headers=None):
         url = f"{self.base_url}/{endpoint}"
         headers = self.get_headers(custom_headers)
-        response = requests.post(url, headers=headers, files=files, data=data)
-        return response, {"url": url, "method": "POST", "headers": headers}
-    
+        start_time = time.time()
+        logging.debug(f"Sending POST request to {url}")
+        response = requests.post(url, headers=headers, files=files, data=data, allow_redirects=True)
+        end_time = time.time()
+        time_duration = self.get_time_duration(start_time, end_time)
+        logging.debug(f"Received response from {url} with status {response.status_code}, duration {time_duration:.2f} ms")
+        return response, {"url": url, "method": "POST", "headers": headers, "time_duration": time_duration}
+
     def post_statuses(self, endpoint, data=None, custom_headers=None):
         url = f"{self.base_url}/{endpoint}"
         headers = self.get_headers(custom_headers)
         headers["content-type"] = "application/json"
-        response = requests.post(url, headers=headers, json=data)
-        return response, {"url": url, "method": "POST", "headers": headers}
+        start_time = time.time()
+        logging.debug(f"Sending POST request to {url}")
+        response = requests.post(url, headers=headers, json=data, allow_redirects=True)
+        end_time = time.time()
+        time_duration = self.get_time_duration(start_time, end_time)
+        logging.debug(f"Received response from {url} with status {response.status_code}, duration {time_duration:.2f} ms")
+        return response, {"url": url, "method": "POST", "headers": headers, "time_duration": time_duration}
 
     def get_status_by_id(self, endpoint, params=None, custom_headers=None):
         url = f"{self.base_url}/{endpoint}"
         headers = self.get_headers(custom_headers)
-        response = requests.get(url, headers=headers, params=params)
-        return response, {"url": url, "method": "GET", "headers": headers}
+        start_time = time.time()
+        logging.debug(f"Sending GET request to {url}")
+        response = requests.get(url, headers=headers, params=params, allow_redirects=True)
+        end_time = time.time()
+        time_duration = self.get_time_duration(start_time, end_time)
+        logging.debug(f"Received response from {url} with status {response.status_code}, duration {time_duration:.2f} ms")
+        return response, {"url": url, "method": "GET", "headers": headers, "time_duration": time_duration}
+
+    def delete_status_by_id(self, endpoint, custom_headers=None):
+        url = f"{self.base_url}/{endpoint}"
+        headers = self.get_headers(custom_headers)
+        start_time = time.time()
+        logging.debug(f"Sending DELETE request to {url}")
+        response = requests.delete(url, headers=headers, allow_redirects=True)
+        end_time = time.time()
+        time_duration = self.get_time_duration(start_time, end_time)
+        logging.debug(f"Received response from {url} with status {response.status_code}, duration {time_duration:.2f} ms")
+        return response, {"url": url, "method": "DELETE", "headers": headers, "time_duration": time_duration}

@@ -195,3 +195,35 @@ def test_get_status_by_id(api_client, reporter):
         reporter.add_result(test_name, "FAIL", 0, {"url": "N/A", "method": "GET", "headers": "N/A"}, {"error": f"Unexpected error: {str(e)}"})
         logging.error(f"{test_name}: Unexpected error - {str(e)}")
         raise
+
+@pytest.mark.env_dev
+@pytest.mark.env_develop
+@pytest.mark.env_staging
+@pytest.mark.env_prod
+@pytest.mark.dependency(depends=["post_statuses"])
+def test_delete_status_by_id(api_client, reporter):
+    global STATUS_ID
+    test_name = "test_delete_status_by_id"
+    try:
+        assert STATUS_ID is not None, "STATUS_ID not set from test_post_statuses"
+        endpoint = f"api/v1/statuses/{STATUS_ID}"
+        response, request_info = api_client.delete_status_by_id(endpoint)
+        
+        try:
+            assert response.status_code == 200, f"Expected status code 200, got {response.status_code}"
+            # Không kiểm tra response body, coi 200 là thành công
+            response_json = response.json() if response.content else {}
+            reporter.add_result(test_name, "PASS", response.status_code, request_info, response_json)
+            logging.debug(f"{test_name}: Added result for PASS")
+        except AssertionError as e:
+            reporter.add_result(test_name, "FAIL", response.status_code, request_info, {"error": str(e)})
+            logging.debug(f"{test_name}: Added result for FAIL - {str(e)}")
+            raise
+    except AssertionError as e:
+        reporter.add_result(test_name, "FAIL", 0, {"url": "N/A", "method": "DELETE", "headers": "N/A"}, {"error": str(e)})
+        logging.debug(f"{test_name}: Added result for FAIL - {str(e)}")
+        raise
+    except Exception as e:
+        reporter.add_result(test_name, "FAIL", 0, {"url": "N/A", "method": "DELETE", "headers": "N/A"}, {"error": f"Unexpected error: {str(e)}"})
+        logging.error(f"{test_name}: Unexpected error - {str(e)}")
+        raise

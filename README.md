@@ -111,5 +111,5 @@ pytest -m env_develop -v -s tests/test_single_api.py::test_post_example
 
 
 AI GROK 
-https://grok.com/share/bGVnYWN5_c7785a4c-1bb1-4f0c-a96d-62c77d2be294
-
+https://grok.com/share/c2hhcmQtMg%3D%3D_6c5f6975-28c6-48cb-8def-84f0ff3458dd
+paste curl và promt "Hãy thêm giúp tôi api này (nếu có: id sẽ được lấy từ api abc)"
