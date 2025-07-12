@@ -6,8 +6,14 @@ import os
 import json
 import logging
 
-# Thiết lập logging để debug
-logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
+# Thiết lập logging để ghi vào file
+os.makedirs("logs", exist_ok=True)
+logging.basicConfig(
+    level=logging.DEBUG,
+    format='%(asctime)s - %(levelname)s - %(message)s',
+    filename='logs/api_test.log',
+    filemode='w'
+)
 
 class ReportGenerator:
     def __init__(self, report_dir="reports"):
@@ -18,7 +24,7 @@ class ReportGenerator:
 
     def add_result(self, test_name, status, response_code, request_info, response_body):
         try:
-            # Định dạng response_body và headers
+            # Định dạng response_body và headers với xuống dòng và thụt lề
             response_body_str = json.dumps(response_body, indent=2, ensure_ascii=False)[:1000] + "..." if len(json.dumps(response_body, indent=2)) > 1000 else json.dumps(response_body, indent=2, ensure_ascii=False)
             headers_str = json.dumps(request_info["headers"], indent=2, ensure_ascii=False)
             result = {
@@ -44,6 +50,7 @@ class ReportGenerator:
         try:
             os.makedirs(f"{self.report_dir}/xlsx", exist_ok=True)
             filename = f"test_report_{env}_{timestamp}.xlsx"
+            filepath = f"{self.report_dir}/xlsx/{filename}"
             # Đọc dữ liệu từ file JSON
             try:
                 with open(self.json_file, "r", encoding="utf-8") as f:
@@ -58,7 +65,8 @@ class ReportGenerator:
             # Đổi tên cột time_duration thành Time Duration (s)
             result = result.rename(columns={"time_duration": "Time Duration (s)"})
             logging.debug(f"XLSX table content: {result.to_dict()}")
-            writer = pd.ExcelWriter(f"{self.report_dir}/xlsx/{filename}", engine="openpyxl")
+            # Ghi vào file Excel
+            writer = pd.ExcelWriter(filepath, engine="openpyxl")
             result.to_excel(writer, index=False, sheet_name="Test Results")
             # Điều chỉnh chiều rộng cột và bật wrap text
             worksheet = writer.sheets["Test Results"]
@@ -68,19 +76,23 @@ class ReportGenerator:
                     len(col)
                 )
                 worksheet.column_dimensions[chr(65 + idx)].width = min(max_length + 5, 50)
-                for cell in worksheet[col]:
+                for cell in worksheet[chr(65 + idx)]:  # Sử dụng chỉ số cột
                     cell.alignment = cell.alignment.copy(wrap_text=True)
             writer.close()
-            logging.debug(f"Generated XLSX report: {filename}")
-            return f"{self.report_dir}/xlsx/{filename}"
+            logging.debug(f"Successfully generated XLSX report: {filepath}")
+            return filepath
+        except PermissionError as pe:
+            logging.error(f"Permission denied when creating XLSX file {filepath}: {pe}")
+            return None
         except Exception as e:
-            logging.error(f"Error generating XLSX: {e}")
+            logging.error(f"Error generating XLSX file {filepath}: {e}")
             return None
 
     def generate_html(self, env, timestamp):
         try:
             os.makedirs(f"{self.report_dir}/html", exist_ok=True)
             filename = f"test_report_{env}_{timestamp}.html"
+            filepath = f"{self.report_dir}/html/{filename}"
             # Đọc dữ liệu từ file JSON
             try:
                 with open(self.json_file, "r", encoding="utf-8") as f:
@@ -128,7 +140,7 @@ class ReportGenerator:
                             Toggle Headers
                         </button>
                         <div class='collapse' id='headers{idx}'>
-                            <pre class='mt-2 mb-0 text-wrap'>{row['headers']}</pre>
+                            <pre class='mt-2 mb-0 text-wrap json-pretty'>{row['headers'].replace('\n', '<br>')}</pre>
                         </div>
                     </td>
                     <td>
@@ -136,7 +148,7 @@ class ReportGenerator:
                             Toggle Response
                         </button>
                         <div class='collapse' id='response{idx}'>
-                            <pre class='mt-2 mb-0 text-wrap'>{row['response_body']}</pre>
+                            <pre class='mt-2 mb-0 text-wrap json-pretty'>{row['response_body'].replace('\n', '<br>')}</pre>
                         </div>
                     </td>
                     <td><span class='{time_class}'>{time_duration:.3f} s</span></td>
@@ -176,7 +188,7 @@ class ReportGenerator:
                 });
             """
             
-            # Generate HTML với Bootstrap và colResizable
+            # Generate HTML với Bootstrap và colResizable, thêm CSS cho JSON
             html_content = f"""
 <html>
 <head>
@@ -188,13 +200,14 @@ class ReportGenerator:
     <style>
         body {{ padding: 20px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }}
         .table-container {{ max-height: 600px; overflow-y: auto; }}
-        .table {{ font-size: 0.85em; width: 100%; border Karla: keep-alive; }}
+        .table {{ font-size: 0.85em; width: 100%; border-collapse: collapse; }}
         th, td {{ vertical-align: middle; padding: 8px !important; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }}
         th {{ background-color: #f1f3f5; position: sticky; top: 0; z-index: 10; }}
         .status-PASS {{ color: #28a745; font-weight: 600; }}
         .status-FAIL {{ color: #dc3545; font-weight: 600; }}
         .status-SKIPPED {{ color: #ffc107; font-weight: 600; }}
         pre.text-wrap {{ white-space: pre-wrap; max-height: 200px; overflow-y: auto; background-color: #f8f9fa; padding: 10px; border-radius: 5px; font-size: 0.8em; max-width: 100%; word-wrap: break-word; }}
+        .json-pretty {{ background-color: #f8f9fa; padding: 10px; border-radius: 5px; font-size: 0.8em; white-space: pre-wrap; overflow-x: auto; line-height: 1.4; }}
         .text-truncate {{ overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 100%; }}
         .chart-container {{ max-width: 400px; margin-bottom: 20px; }}
         .text-success {{ color: #28a745; font-weight: 600; }} /* Xanh cho nhanh (< 0.2 s) */
@@ -255,10 +268,10 @@ class ReportGenerator:
 </html>
 """
             
-            with open(f"{self.report_dir}/html/{filename}", "w", encoding="utf-8") as f:
+            with open(filepath, "w", encoding="utf-8") as f:
                 f.write(html_content)
-            logging.debug(f"Generated HTML report: {filename}")
-            return f"{self.report_dir}/html/{filename}"
+            logging.debug(f"Successfully generated HTML report: {filepath}")
+            return filepath
         except Exception as e:
-            logging.error(f"Error generating HTML: {e}")
+            logging.error(f"Error generating HTML file {filepath}: {e}")
             return None
