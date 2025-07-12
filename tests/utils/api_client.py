@@ -38,4 +38,28 @@ class APIClient:
         url = f"{self.base_url}/{endpoint}"
         headers = self.get_headers(custom_headers)
         response = requests.post(url, headers=headers, json=data)
+
+    def get_v1_statuses_114820978318185384(self, endpoint, data=None, custom_headers=None):
+        url = f"{self.base_url}/{endpoint}"
+        headers = self.get_headers(custom_headers)
+        response = requests.get(url, headers=headers, json=data)
+        return response, {"url": url, "method": "GET", "headers": headers}
+
+    def post_media(self, endpoint, files=None, data=None, custom_headers=None):
+        url = f"{self.base_url}/{endpoint}"
+        headers = self.get_headers(custom_headers)
+        response = requests.post(url, headers=headers, files=files, data=data)
         return response, {"url": url, "method": "POST", "headers": headers}
+    
+    def post_statuses(self, endpoint, data=None, custom_headers=None):
+        url = f"{self.base_url}/{endpoint}"
+        headers = self.get_headers(custom_headers)
+        headers["content-type"] = "application/json"
+        response = requests.post(url, headers=headers, json=data)
+        return response, {"url": url, "method": "POST", "headers": headers}
+
+    def get_status_by_id(self, endpoint, params=None, custom_headers=None):
+        url = f"{self.base_url}/{endpoint}"
+        headers = self.get_headers(custom_headers)
+        response = requests.get(url, headers=headers, params=params)
+        return response, {"url": url, "method": "GET", "headers": headers}

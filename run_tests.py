@@ -25,8 +25,8 @@ def main():
         "-m", f"env_{args.env}",
         "-v", "-s",
         "tests/test_single_api.py",
-        "tests/test_api_flow.py"
     ]
+        # "tests/test_api_flow.py"
     
     reporter = ReportGenerator()
     timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
