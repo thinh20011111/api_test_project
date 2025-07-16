@@ -89,3 +89,14 @@ class APIClient:
         time_duration = self.get_time_duration(start_time, end_time)
         logging.debug(f"Received response from {url} with status {response.status_code}, duration {time_duration:.2f} ms")
         return response, {"url": url, "method": "DELETE", "headers": headers, "time_duration": time_duration}
+
+    def patch(self, endpoint, files=None, data=None, custom_headers=None):
+        url = f"{self.base_url}/{endpoint}"
+        headers = self.get_headers(custom_headers)
+        start_time = time.time()
+        logging.debug(f"Sending PATCH request to {url}")
+        response = requests.patch(url, headers=headers, files=files, data=data, allow_redirects=True)
+        end_time = time.time()
+        time_duration = self.get_time_duration(start_time, end_time)
+        logging.debug(f"Received response from {url} with status {response.status_code}, duration {time_duration:.2f} ms")
+        return response, {"url": url, "method": "PATCH", "headers": headers, "time_duration": time_duration}

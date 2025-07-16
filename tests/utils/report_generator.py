@@ -24,12 +24,18 @@ class ReportGenerator:
 
     def add_result(self, test_name, status, response_code, request_info, response_body):
         try:
+            # Xác định trạng thái dựa trên response_code
+            determined_status = "PASS" if 200 <= response_code < 300 else "FAIL"
+
+            # Ghi đè status nếu được cung cấp, nhưng ưu tiên logic dựa trên response_code
+            final_status = determined_status if status in ["PASS", "FAIL", "SKIPPED"] else determined_status
+
             # Định dạng response_body và headers với xuống dòng và thụt lề
             response_body_str = json.dumps(response_body, indent=2, ensure_ascii=False)[:1000] + "..." if len(json.dumps(response_body, indent=2)) > 1000 else json.dumps(response_body, indent=2, ensure_ascii=False)
             headers_str = json.dumps(request_info["headers"], indent=2, ensure_ascii=False)
             result = {
                 "test_name": test_name,
-                "status": status,
+                "status": final_status,
                 "response_code": response_code,
                 "url": request_info["url"],
                 "method": request_info["method"],
@@ -64,7 +70,7 @@ class ReportGenerator:
                 return None
             # Đổi tên cột time_duration thành Time Duration (s)
             result = result.rename(columns={"time_duration": "Time Duration (s)"})
-            logging.debug(f"XLSX table content: {result.to_dict()}")
+            # logging.debug(f"XLSX table content: {result.to_dict()}")
             # Ghi vào file Excel
             writer = pd.ExcelWriter(filepath, engine="openpyxl")
             result.to_excel(writer, index=False, sheet_name="Test Results")
@@ -105,7 +111,7 @@ class ReportGenerator:
                 result = pd.DataFrame(columns=["test_name", "status", "response_code", "url", "method", "headers", "response_body", "time_duration", "timestamp"])
                 logging.warning("No test results to generate HTML report")
 
-            logging.debug(f"HTML table content: {result.to_dict()}")
+            # logging.debug(f"HTML table content: {result.to_dict()}")
             
             # Create donut chart
             status_counts = result["status"].value_counts() if not result.empty else pd.Series({"No Results": 1})
