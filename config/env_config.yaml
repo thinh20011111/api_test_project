@@ -1,7 +1,7 @@
 # config/env_config.yaml
 develop:
   base_url: "https://lab-sn.emso.vn"
-  auth_token: "XUUvHchCBI3Fh0jPfgfJSq1QBhrYaO2yqNwrbWHp8dA"
+  auth_token: "RywajiSwzcSA2cgQElYjOktuvBt2duWDPQqBomK5cMo"
 staging:
   base_url: "https://api-staging.emso.vn"
   auth_token: "your_staging_token_here"

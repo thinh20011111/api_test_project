@@ -5,6 +5,7 @@ import plotly.io as pio
 import os
 import json
 import logging
+from filelock import FileLock
 
 # Thiết lập logging để ghi vào file
 os.makedirs("logs", exist_ok=True)
@@ -20,47 +21,63 @@ class ReportGenerator:
         self.report_dir = report_dir
         self.results = []
         self.json_file = f"{self.report_dir}/json/test_results.json"
+        self.lock_file = f"{self.json_file}.lock"
         os.makedirs(f"{self.report_dir}/json", exist_ok=True)
 
-    def add_result(self, test_name, status, response_code, request_info, response_body):
+    def add_result(self, test_name, status, response_code, response, request_info):
         try:
             # Xác định trạng thái dựa trên response_code
             determined_status = "PASS" if 200 <= response_code < 300 else "FAIL"
-
-            # Ghi đè status nếu được cung cấp, nhưng ưu tiên logic dựa trên response_code
             final_status = determined_status if status in ["PASS", "FAIL", "SKIPPED"] else determined_status
 
-            # Định dạng response_body và headers với xuống dòng và thụt lề
+            # Lấy dữ liệu từ request_info
+            request_info = request_info or {}
+            url = request_info.get("url", "N/A")
+            method = request_info.get("method", "N/A")
+            headers = request_info.get("headers", {})
+            time_duration = request_info.get("time_duration", 0) / 1000  # Chuyển từ ms sang giây
+
+            # Xử lý response_body
+            response_body = {}
+            if response and hasattr(response, 'text') and response.text:
+                try:
+                    response_body = response.json() if hasattr(response, 'json') else {"raw": response.text}
+                except ValueError:
+                    response_body = {"error": "Invalid JSON", "raw": response.text[:500]}
+            elif response:
+                response_body = {"error": "No response body"}
             response_body_str = json.dumps(response_body, indent=2, ensure_ascii=False)[:1000] + "..." if len(json.dumps(response_body, indent=2)) > 1000 else json.dumps(response_body, indent=2, ensure_ascii=False)
-            headers_str = json.dumps(request_info["headers"], indent=2, ensure_ascii=False)
+            headers_str = json.dumps(headers, indent=2, ensure_ascii=False) if headers else "N/A"
+
             result = {
                 "test_name": test_name,
                 "status": final_status,
                 "response_code": response_code,
-                "url": request_info["url"],
-                "method": request_info["method"],
+                "url": url,
+                "method": method,
                 "headers": headers_str,
                 "response_body": response_body_str,
-                "time_duration": request_info.get("time_duration", 0),  # Lưu bằng giây
+                "time_duration": time_duration,
                 "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             }
             self.results.append(result)
-            # Lưu vào file JSON
-            with open(self.json_file, "w", encoding="utf-8") as f:
-                json.dump(self.results, f, indent=2, ensure_ascii=False)
+            # Ghi vào file JSON với khóa để tránh xung đột
+            with FileLock(self.lock_file):
+                with open(self.json_file, "w", encoding="utf-8") as f:
+                    json.dump(self.results, f, indent=2, ensure_ascii=False)
             logging.debug(f"Added result and saved to JSON: {result}")
         except Exception as e:
-            logging.error(f"Error adding result: {e}")
+            logging.error(f"Error adding result for {test_name}: {e}")
 
     def generate_xlsx(self, env, timestamp):
         try:
             os.makedirs(f"{self.report_dir}/xlsx", exist_ok=True)
             filename = f"test_report_{env}_{timestamp}.xlsx"
             filepath = f"{self.report_dir}/xlsx/{filename}"
-            # Đọc dữ liệu từ file JSON
             try:
-                with open(self.json_file, "r", encoding="utf-8") as f:
-                    results = json.load(f)
+                with FileLock(self.lock_file):
+                    with open(self.json_file, "r", encoding="utf-8") as f:
+                        results = json.load(f)
             except FileNotFoundError:
                 results = []
                 logging.warning(f"JSON file {self.json_file} not found, using empty results")
@@ -68,13 +85,9 @@ class ReportGenerator:
             if result.empty:
                 logging.warning("No test results to generate XLSX report, skipping generation")
                 return None
-            # Đổi tên cột time_duration thành Time Duration (s)
             result = result.rename(columns={"time_duration": "Time Duration (s)"})
-            # logging.debug(f"XLSX table content: {result.to_dict()}")
-            # Ghi vào file Excel
             writer = pd.ExcelWriter(filepath, engine="openpyxl")
             result.to_excel(writer, index=False, sheet_name="Test Results")
-            # Điều chỉnh chiều rộng cột và bật wrap text
             worksheet = writer.sheets["Test Results"]
             for idx, col in enumerate(result.columns):
                 max_length = max(
@@ -82,7 +95,7 @@ class ReportGenerator:
                     len(col)
                 )
                 worksheet.column_dimensions[chr(65 + idx)].width = min(max_length + 5, 50)
-                for cell in worksheet[chr(65 + idx)]:  # Sử dụng chỉ số cột
+                for cell in worksheet[chr(65 + idx)]:
                     cell.alignment = cell.alignment.copy(wrap_text=True)
             writer.close()
             logging.debug(f"Successfully generated XLSX report: {filepath}")
@@ -99,10 +112,10 @@ class ReportGenerator:
             os.makedirs(f"{self.report_dir}/html", exist_ok=True)
             filename = f"test_report_{env}_{timestamp}.html"
             filepath = f"{self.report_dir}/html/{filename}"
-            # Đọc dữ liệu từ file JSON
             try:
-                with open(self.json_file, "r", encoding="utf-8") as f:
-                    results = json.load(f)
+                with FileLock(self.lock_file):
+                    with open(self.json_file, "r", encoding="utf-8") as f:
+                        results = json.load(f)
             except FileNotFoundError:
                 results = []
                 logging.warning(f"JSON file {self.json_file} not found, using empty results")
@@ -111,9 +124,6 @@ class ReportGenerator:
                 result = pd.DataFrame(columns=["test_name", "status", "response_code", "url", "method", "headers", "response_body", "time_duration", "timestamp"])
                 logging.warning("No test results to generate HTML report")
 
-            # logging.debug(f"HTML table content: {result.to_dict()}")
-            
-            # Create donut chart
             status_counts = result["status"].value_counts() if not result.empty else pd.Series({"No Results": 1})
             fig = px.pie(
                 values=status_counts.values,
@@ -129,7 +139,6 @@ class ReportGenerator:
                 marker=dict(line=dict(color='#000000', width=2))
             )
             
-            # Convert DataFrame to HTML with collapsible content and color-coded time_duration
             table_rows = ""
             for idx, row in result.iterrows():
                 time_duration = float(row['time_duration'])
@@ -162,9 +171,7 @@ class ReportGenerator:
                 </tr>
                 """
             
-            # JavaScript code for Plotly and colResizable
             js_code = """
-                /* Lấy biểu đồ Plotly */
                 document.addEventListener('DOMContentLoaded', function() {
                     const chart = document.querySelector('.plotly-graph-div');
                     chart.on('plotly_click', function(data) {
@@ -176,14 +183,12 @@ class ReportGenerator:
                             row.style.display = (status === statusCell) ? '' : 'none';
                         });
                     });
-                    /* Reset filter khi click ngoài biểu đồ */
                     document.querySelector('.container-fluid').addEventListener('click', function(e) {
                         if (!e.target.closest('.plotly-graph-div')) {
                             const rows = document.querySelectorAll('#testTableBody tr');
                             rows.forEach(row => { row.style.display = ''; });
                         }
                     });
-                    /* Kích hoạt colResizable cho bảng */
                     $(document).ready(function() {
                         $("#testTable").colResizable({
                             liveDrag: true,
@@ -194,7 +199,28 @@ class ReportGenerator:
                 });
             """
             
-            # Generate HTML với Bootstrap và colResizable, thêm CSS cho JSON
+            # Định nghĩa CSS trong chuỗi thô để tránh lỗi cú pháp
+            style_css = """
+            body { padding: 20px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+            .table-container { max-height: 600px; overflow-y: auto; }
+            .table { font-size: 0.85em; width: 100%; border-collapse: collapse; }
+            th, td { vertical-align: middle; padding: 8px !important; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+            th { background-color: #f1f3f5; position: sticky; top: 0; z-index: 10; }
+            .status-PASS { color: #28a745; font-weight: 600; }
+            .status-FAIL { color: #dc3545; font-weight: 600; }
+            .status-SKIPPED { color: #ffc107; font-weight: 600; }
+            pre.text-wrap { white-space: pre-wrap; max-height: 200px; overflow-y: auto; background-color: #f8f9fa; padding: 10px; border-radius: 5px; font-size: 0.8em; max-width: 100%; word-wrap: break-word; }
+            .json-pretty { background-color: #f8f9fa; padding: 10px; border-radius: 5px; font-size: 0.8em; white-space: pre-wrap; overflow-x: auto; line-height: 1.4; }
+            .text-truncate { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 100%; }
+            .chart-container { max-width: 400px; margin-bottom: 20px; }
+            .text-success { color: #28a745; font-weight: 600; }
+            .text-warning { color: #ffc107; font-weight: 600; }
+            .text-danger { color: #dc3545; font-weight: 600; }
+            .grip { width: 5px; height: 20px; background: #ccc; margin: 0 auto; }
+            .dragging { cursor: col-resize; }
+            @media (max-width: 768px) { .table { font-size: 0.75em; } }
+            """
+
             html_content = f"""
 <html>
 <head>
@@ -204,24 +230,7 @@ class ReportGenerator:
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jeresig-jquery.hotkeys/0.2.0/jquery.hotkeys.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/colresizable/1.6.0/colResizable.min.js"></script>
     <style>
-        body {{ padding: 20px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }}
-        .table-container {{ max-height: 600px; overflow-y: auto; }}
-        .table {{ font-size: 0.85em; width: 100%; border-collapse: collapse; }}
-        th, td {{ vertical-align: middle; padding: 8px !important; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }}
-        th {{ background-color: #f1f3f5; position: sticky; top: 0; z-index: 10; }}
-        .status-PASS {{ color: #28a745; font-weight: 600; }}
-        .status-FAIL {{ color: #dc3545; font-weight: 600; }}
-        .status-SKIPPED {{ color: #ffc107; font-weight: 600; }}
-        pre.text-wrap {{ white-space: pre-wrap; max-height: 200px; overflow-y: auto; background-color: #f8f9fa; padding: 10px; border-radius: 5px; font-size: 0.8em; max-width: 100%; word-wrap: break-word; }}
-        .json-pretty {{ background-color: #f8f9fa; padding: 10px; border-radius: 5px; font-size: 0.8em; white-space: pre-wrap; overflow-x: auto; line-height: 1.4; }}
-        .text-truncate {{ overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 100%; }}
-        .chart-container {{ max-width: 400px; margin-bottom: 20px; }}
-        .text-success {{ color: #28a745; font-weight: 600; }} /* Xanh cho nhanh (< 0.2 s) */
-        .text-warning {{ color: #ffc107; font-weight: 600; }} /* Vàng cho trung bình (0.2-0.5 s) */
-        .text-danger {{ color: #dc3545; font-weight: 600; }} /* Đỏ cho chậm (>= 0.5 s) */
-        .grip {{ width: 5px; height: 20px; background: #ccc; margin: 0 auto; }}
-        .dragging {{ cursor: col-resize; }}
-        @media (max-width: 768px) {{ .table {{ font-size: 0.75em; }} }}
+        {style_css}
     </style>
 </head>
 <body>
@@ -273,7 +282,6 @@ class ReportGenerator:
 </body>
 </html>
 """
-            
             with open(filepath, "w", encoding="utf-8") as f:
                 f.write(html_content)
             logging.debug(f"Successfully generated HTML report: {filepath}")

@@ -1,0 +1,262 @@
+
+<html>
+<head>
+    <title>Test Report (develop)</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jeresig-jquery.hotkeys/0.2.0/jquery.hotkeys.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/colresizable/1.6.0/colResizable.min.js"></script>
+    <style>
+        
+            body { padding: 20px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+            .table-container { max-height: 600px; overflow-y: auto; }
+            .table { font-size: 0.85em; width: 100%; border-collapse: collapse; }
+            th, td { vertical-align: middle; padding: 8px !important; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+            th { background-color: #f1f3f5; position: sticky; top: 0; z-index: 10; }
+            .status-PASS { color: #28a745; font-weight: 600; }
+            .status-FAIL { color: #dc3545; font-weight: 600; }
+            .status-SKIPPED { color: #ffc107; font-weight: 600; }
+            pre.text-wrap { white-space: pre-wrap; max-height: 200px; overflow-y: auto; background-color: #f8f9fa; padding: 10px; border-radius: 5px; font-size: 0.8em; max-width: 100%; word-wrap: break-word; }
+            .json-pretty { background-color: #f8f9fa; padding: 10px; border-radius: 5px; font-size: 0.8em; white-space: pre-wrap; overflow-x: auto; line-height: 1.4; }
+            .text-truncate { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 100%; }
+            .chart-container { max-width: 400px; margin-bottom: 20px; }
+            .text-success { color: #28a745; font-weight: 600; }
+            .text-warning { color: #ffc107; font-weight: 600; }
+            .text-danger { color: #dc3545; font-weight: 600; }
+            .grip { width: 5px; height: 20px; background: #ccc; margin: 0 auto; }
+            .dragging { cursor: col-resize; }
+            @media (max-width: 768px) { .table { font-size: 0.75em; } }
+            
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <h1 class="my-4">Test Report (develop)</h1>
+        <div class="row">
+            <div class="col-lg-3 col-md-4 chart-container">
+                <div>                        <script type="text/javascript">window.PlotlyConfig = {MathJaxConfig: 'local'};</script>
+        <script charset="utf-8" src="https://cdn.plot.ly/plotly-2.32.0.min.js"></script>                <div id="4c84ec41-7ae6-4f41-a2f8-d52f0896d040" class="plotly-graph-div" style="height:100%; width:100%;"></div>            <script type="text/javascript">                                    window.PLOTLYENV=window.PLOTLYENV || {};                                    if (document.getElementById("4c84ec41-7ae6-4f41-a2f8-d52f0896d040")) {                    Plotly.newPlot(                        "4c84ec41-7ae6-4f41-a2f8-d52f0896d040",                        [{"domain":{"x":[0.0,1.0],"y":[0.0,1.0]},"hole":0.4,"hovertemplate":"label=%{label}\u003cbr\u003evalue=%{value}\u003cextra\u003e\u003c\u002fextra\u003e","labels":["PASS"],"legendgroup":"","name":"","showlegend":true,"values":[6],"type":"pie","textfont":{"size":14},"marker":{"line":{"color":"#000000","width":2}},"hoverinfo":"label+percent","textinfo":"value+percent"}],                        {"template":{"data":{"histogram2dcontour":[{"type":"histogram2dcontour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"choropleth":[{"type":"choropleth","colorbar":{"outlinewidth":0,"ticks":""}}],"histogram2d":[{"type":"histogram2d","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmap":[{"type":"heatmap","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"heatmapgl":[{"type":"heatmapgl","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"contourcarpet":[{"type":"contourcarpet","colorbar":{"outlinewidth":0,"ticks":""}}],"contour":[{"type":"contour","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"surface":[{"type":"surface","colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]}],"mesh3d":[{"type":"mesh3d","colorbar":{"outlinewidth":0,"ticks":""}}],"scatter":[{"fillpattern":{"fillmode":"overlay","size":10,"solidity":0.2},"type":"scatter"}],"parcoords":[{"type":"parcoords","line":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolargl":[{"type":"scatterpolargl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"bar":[{"error_x":{"color":"#2a3f5f"},"error_y":{"color":"#2a3f5f"},"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"scattergeo":[{"type":"scattergeo","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterpolar":[{"type":"scatterpolar","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"scattergl":[{"type":"scattergl","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatter3d":[{"type":"scatter3d","line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattermapbox":[{"type":"scattermapbox","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scatterternary":[{"type":"scatterternary","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"scattercarpet":[{"type":"scattercarpet","marker":{"colorbar":{"outlinewidth":0,"ticks":""}}}],"carpet":[{"aaxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"baxis":{"endlinecolor":"#2a3f5f","gridcolor":"white","linecolor":"white","minorgridcolor":"white","startlinecolor":"#2a3f5f"},"type":"carpet"}],"table":[{"cells":{"fill":{"color":"#EBF0F8"},"line":{"color":"white"}},"header":{"fill":{"color":"#C8D4E3"},"line":{"color":"white"}},"type":"table"}],"barpolar":[{"marker":{"line":{"color":"#E5ECF6","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"pie":[{"automargin":true,"type":"pie"}]},"layout":{"autotypenumbers":"strict","colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#2a3f5f"},"hovermode":"closest","hoverlabel":{"align":"left"},"paper_bgcolor":"white","plot_bgcolor":"#E5ECF6","polar":{"bgcolor":"#E5ECF6","angularaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"radialaxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"ternary":{"bgcolor":"#E5ECF6","aaxis":{"gridcolor":"white","linecolor":"white","ticks":""},"baxis":{"gridcolor":"white","linecolor":"white","ticks":""},"caxis":{"gridcolor":"white","linecolor":"white","ticks":""}},"coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]]},"xaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"yaxis":{"gridcolor":"white","linecolor":"white","ticks":"","title":{"standoff":15},"zerolinecolor":"white","automargin":true,"zerolinewidth":2},"scene":{"xaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"yaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2},"zaxis":{"backgroundcolor":"#E5ECF6","gridcolor":"white","linecolor":"white","showbackground":true,"ticks":"","zerolinecolor":"white","gridwidth":2}},"shapedefaults":{"line":{"color":"#2a3f5f"}},"annotationdefaults":{"arrowcolor":"#2a3f5f","arrowhead":0,"arrowwidth":1},"geo":{"bgcolor":"white","landcolor":"#E5ECF6","subunitcolor":"white","showland":true,"showlakes":true,"lakecolor":"white"},"title":{"x":0.05},"mapbox":{"style":"light"}}},"legend":{"tracegroupgap":0},"title":{"text":"Test Results by Status"},"piecolorway":["rgb(141,211,199)","rgb(255,255,179)","rgb(190,186,218)","rgb(251,128,114)","rgb(128,177,211)","rgb(253,180,98)","rgb(179,222,105)","rgb(252,205,229)","rgb(217,217,217)","rgb(188,128,189)","rgb(204,235,197)","rgb(255,237,111)"]},                        {"responsive": true}                    )                };                            </script>        </div>
+            </div>
+            <div class="col-lg-9 col-md-8">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title">Summary</h5>
+                        <p>Total Tests: 6</p>
+                        <p>Passed: 6 (100.0%)</p>
+                        <p>Failed: 0 (0.0%)</p>
+                        <p>Skipped: 0 (0.0%)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <h2 class="my-4">Test Details</h2>
+        <div class="table-container">
+            <table id="testTable" class="table table-striped table-bordered table-sm">
+                <thead>
+                    <tr>
+                        <th style="width: 15%;">Test Name</th>
+                        <th style="width: 10%;">Status</th>
+                        <th style="width: 10%;">Response Code</th>
+                        <th style="width: 15%;">URL</th>
+                        <th style="width: 10%;">Method</th>
+                        <th style="width: 20%;">Headers</th>
+                        <th style="width: 20%;">Response Body</th>
+                        <th style="width: 10%;">Time Duration (s)</th>
+                        <th style="width: 10%;">Timestamp</th>
+                    </tr>
+                </thead>
+                <tbody id="testTableBody">
+                    
+                <tr>
+                    <td class="text-truncate">test_get_me</td>
+                    <td><span class='status-PASS'>PASS</span></td>
+                    <td>200</td>
+                    <td><a href='https://lab-sn.emso.vn/api/v1/me' target='_blank' class='text-truncate' style='display: inline-block;'>https://lab-sn.emso.vn/api/v1/me</a></td>
+                    <td>GET</td>
+                    <td>
+                        <button class='btn btn-sm btn-outline-primary' type='button' data-bs-toggle='collapse' data-bs-target='#headers0' aria-expanded='false' aria-controls='headers0'>
+                            Toggle Headers
+                        </button>
+                        <div class='collapse' id='headers0'>
+                            <pre class='mt-2 mb-0 text-wrap json-pretty'>{<br>  "accept": "application/json, text/plain, */*",<br>  "accept-language": "vi-VN,vi;q=0.9,fr-FR;q=0.8,fr;q=0.7,en-US;q=0.6,en;q=0.5",<br>  "origin": "https://lab-fe.emso.vn",<br>  "priority": "u=1, i",<br>  "referer": "https://lab-fe.emso.vn/",<br>  "sec-ch-ua": "\"Not)A;Brand\";v=\"8\", \"Chromium\";v=\"138\", \"Google Chrome\";v=\"138\"",<br>  "sec-ch-ua-mobile": "?0",<br>  "sec-ch-ua-platform": "\"Windows\"",<br>  "sec-fetch-dest": "empty",<br>  "sec-fetch-mode": "cors",<br>  "sec-fetch-site": "same-site",<br>  "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36",<br>  "authorization": "Bearer RywajiSwzcSA2cgQElYjOktuvBt2duWDPQqBomK5cMo"<br>}</pre>
+                        </div>
+                    </td>
+                    <td>
+                        <button class='btn btn-sm btn-outline-primary' type='button' data-bs-toggle='collapse' data-bs-target='#response0' aria-expanded='false' aria-controls='response0'>
+                            Toggle Response
+                        </button>
+                        <div class='collapse' id='response0'>
+                            <pre class='mt-2 mb-0 text-wrap json-pretty'>{<br>  "id": "109307596693229606",<br>  "username": "thuytrang3008",<br>  "acct": "thuytrang3008",<br>  "display_name": "Trang Thùy",<br>  "email": "s1456a2@gmail.com",<br>  "locked": false,<br>  "bot": false,<br>  "discoverable": null,<br>  "group": false,<br>  "created_at": "2022-11-08T00:00:00.000+07:00",<br>  "earn_money": false,<br>  "gender": null,<br>  "note": "<p></p>",<br>  "followers_count": 54,<br>  "following_count": 54,<br>  "statuses_count": 148858,<br>  "last_status_at": "2025-07-17",<br>  "friends_count": 36,<br>  "theme": "dark",<br>  "identity_verification": true,<br>  "avatar_static": "https://s3.hn-1.cloud.cmctelecom.vn/sn-web/images/default/missing.png",<br>  "updated_at": "2025-07-17T16:45:10.952+07:00",<br>  "moments_count": 14985,<br>  "certified": true,<br>  "first_update_profile": true,<br>  "reset_password_required": false,<br>  "admin": false,<br>  "moderator": false,<br>  "partner_roll": null,<br>  "banner": {<br>    "id": "112884552599643214",<br>    "type": "image",<br>    "url": "https://cdn4.emso.vn/sn-web/media_attachments/files/112/884/552/599/643/...</pre>
+                        </div>
+                    </td>
+                    <td><span class='text-success'>0.000 s</span></td>
+                    <td class="text-truncate">2025-07-17 16:49:52</td>
+                </tr>
+                
+                <tr>
+                    <td class="text-truncate">test_post_media</td>
+                    <td><span class='status-PASS'>PASS</span></td>
+                    <td>200</td>
+                    <td><a href='https://lab-sn.emso.vn/api/v1/media' target='_blank' class='text-truncate' style='display: inline-block;'>https://lab-sn.emso.vn/api/v1/media</a></td>
+                    <td>POST</td>
+                    <td>
+                        <button class='btn btn-sm btn-outline-primary' type='button' data-bs-toggle='collapse' data-bs-target='#headers1' aria-expanded='false' aria-controls='headers1'>
+                            Toggle Headers
+                        </button>
+                        <div class='collapse' id='headers1'>
+                            <pre class='mt-2 mb-0 text-wrap json-pretty'>{<br>  "accept": "application/json, text/plain, */*",<br>  "accept-language": "vi-VN,vi;q=0.9,fr-FR;q=0.8,fr;q=0.7,en-US;q=0.6,en;q=0.5",<br>  "origin": "https://lab-fe.emso.vn",<br>  "priority": "u=1, i",<br>  "referer": "https://lab-fe.emso.vn/",<br>  "sec-ch-ua": "\"Not)A;Brand\";v=\"8\", \"Chromium\";v=\"138\", \"Google Chrome\";v=\"138\"",<br>  "sec-ch-ua-mobile": "?0",<br>  "sec-ch-ua-platform": "\"Windows\"",<br>  "sec-fetch-dest": "empty",<br>  "sec-fetch-mode": "cors",<br>  "sec-fetch-site": "same-site",<br>  "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36",<br>  "authorization": "Bearer RywajiSwzcSA2cgQElYjOktuvBt2duWDPQqBomK5cMo"<br>}</pre>
+                        </div>
+                    </td>
+                    <td>
+                        <button class='btn btn-sm btn-outline-primary' type='button' data-bs-toggle='collapse' data-bs-target='#response1' aria-expanded='false' aria-controls='response1'>
+                            Toggle Response
+                        </button>
+                        <div class='collapse' id='response1'>
+                            <pre class='mt-2 mb-0 text-wrap json-pretty'>{<br>  "id": "114867948558506816",<br>  "type": "image",<br>  "url": "https://cdn4.emso.vn/sn-web/media_attachments/files/114/867/948/558/506/816/original/bc18091fee363415.png",<br>  "preview_url": "https://cdn4.emso.vn/sn-web/media_attachments/files/114/867/948/558/506/816/small/bc18091fee363415.png",<br>  "remote_url": null,<br>  "low_quality_url": null,<br>  "preview_remote_url": null,<br>  "text_url": null,<br>  "meta": {<br>    "original": {<br>      "width": 769,<br>      "height": 769,<br>      "size": "769x769",<br>      "aspect": 1.0,<br>      "average_color": "#a3918b"<br>    },<br>    "small": {<br>      "width": 400,<br>      "height": 400,<br>      "size": "400x400",<br>      "aspect": 1.0,<br>      "average_color": "#a2918a"<br>    }<br>  },<br>  "description": null,<br>  "position": null,<br>  "blurhash": null,<br>  "status_id": "",<br>  "show_url": null,<br>  "created_at": "2025-07-17T16:49:57.209+07:00",<br>  "frame": null,<br>  "sound": null,<br>  "status_media": null<br>}</pre>
+                        </div>
+                    </td>
+                    <td><span class='text-success'>0.001 s</span></td>
+                    <td class="text-truncate">2025-07-17 16:49:54</td>
+                </tr>
+                
+                <tr>
+                    <td class="text-truncate">test_update_avatar</td>
+                    <td><span class='status-PASS'>PASS</span></td>
+                    <td>200</td>
+                    <td><a href='https://lab-sn.emso.vn/api/v1/accounts/update_credentials' target='_blank' class='text-truncate' style='display: inline-block;'>https://lab-sn.emso.vn/api/v1/accounts/update_credentials</a></td>
+                    <td>PATCH</td>
+                    <td>
+                        <button class='btn btn-sm btn-outline-primary' type='button' data-bs-toggle='collapse' data-bs-target='#headers2' aria-expanded='false' aria-controls='headers2'>
+                            Toggle Headers
+                        </button>
+                        <div class='collapse' id='headers2'>
+                            <pre class='mt-2 mb-0 text-wrap json-pretty'>{<br>  "accept": "application/json, text/plain, */*",<br>  "accept-language": "vi-VN,vi;q=0.9,fr-FR;q=0.8,fr;q=0.7,en-US;q=0.6,en;q=0.5",<br>  "origin": "https://lab-fe.emso.vn",<br>  "priority": "u=1, i",<br>  "referer": "https://lab-fe.emso.vn/",<br>  "sec-ch-ua": "\"Not)A;Brand\";v=\"8\", \"Chromium\";v=\"138\", \"Google Chrome\";v=\"138\"",<br>  "sec-ch-ua-mobile": "?0",<br>  "sec-ch-ua-platform": "\"Windows\"",<br>  "sec-fetch-dest": "empty",<br>  "sec-fetch-mode": "cors",<br>  "sec-fetch-site": "same-site",<br>  "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36",<br>  "authorization": "Bearer RywajiSwzcSA2cgQElYjOktuvBt2duWDPQqBomK5cMo"<br>}</pre>
+                        </div>
+                    </td>
+                    <td>
+                        <button class='btn btn-sm btn-outline-primary' type='button' data-bs-toggle='collapse' data-bs-target='#response2' aria-expanded='false' aria-controls='response2'>
+                            Toggle Response
+                        </button>
+                        <div class='collapse' id='response2'>
+                            <pre class='mt-2 mb-0 text-wrap json-pretty'>{<br>  "success": true,<br>  "error": false,<br>  "message": null<br>}</pre>
+                        </div>
+                    </td>
+                    <td><span class='text-success'>0.002 s</span></td>
+                    <td class="text-truncate">2025-07-17 16:49:56</td>
+                </tr>
+                
+                <tr>
+                    <td class="text-truncate">test_post_statuses</td>
+                    <td><span class='status-PASS'>PASS</span></td>
+                    <td>200</td>
+                    <td><a href='https://lab-sn.emso.vn/api/v1/statuses' target='_blank' class='text-truncate' style='display: inline-block;'>https://lab-sn.emso.vn/api/v1/statuses</a></td>
+                    <td>POST</td>
+                    <td>
+                        <button class='btn btn-sm btn-outline-primary' type='button' data-bs-toggle='collapse' data-bs-target='#headers3' aria-expanded='false' aria-controls='headers3'>
+                            Toggle Headers
+                        </button>
+                        <div class='collapse' id='headers3'>
+                            <pre class='mt-2 mb-0 text-wrap json-pretty'>{<br>  "accept": "application/json, text/plain, */*",<br>  "accept-language": "vi-VN,vi;q=0.9,fr-FR;q=0.8,fr;q=0.7,en-US;q=0.6,en;q=0.5",<br>  "origin": "https://lab-fe.emso.vn",<br>  "priority": "u=1, i",<br>  "referer": "https://lab-fe.emso.vn/",<br>  "sec-ch-ua": "\"Not)A;Brand\";v=\"8\", \"Chromium\";v=\"138\", \"Google Chrome\";v=\"138\"",<br>  "sec-ch-ua-mobile": "?0",<br>  "sec-ch-ua-platform": "\"Windows\"",<br>  "sec-fetch-dest": "empty",<br>  "sec-fetch-mode": "cors",<br>  "sec-fetch-site": "same-site",<br>  "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36",<br>  "authorization": "Bearer RywajiSwzcSA2cgQElYjOktuvBt2duWDPQqBomK5cMo",<br>  "content-type": "application/json"<br>}</pre>
+                        </div>
+                    </td>
+                    <td>
+                        <button class='btn btn-sm btn-outline-primary' type='button' data-bs-toggle='collapse' data-bs-target='#response3' aria-expanded='false' aria-controls='response3'>
+                            Toggle Response
+                        </button>
+                        <div class='collapse' id='response3'>
+                            <pre class='mt-2 mb-0 text-wrap json-pretty'>{<br>  "id": "114867948688442532",<br>  "created_at": "2025-07-17T16:49:59.205+07:00",<br>  "backdated_time": "2025-07-17T16:49:59.205+07:00",<br>  "in_reply_to_id": null,<br>  "in_reply_to_account_id": null,<br>  "share_product_or_course": null,<br>  "sensitive": false,<br>  "spoiler_text": "",<br>  "visibility": "public",<br>  "language": "vi",<br>  "post_type": "default",<br>  "share_status_account_id": null,<br>  "share_status_page_id": null,<br>  "replies_count": 0,<br>  "off_comment": false,<br>  "reblogs_count": 0,<br>  "post_category_id": 288,<br>  "favourites_count": 0,<br>  "reactions": [<br>    {<br>      "type": "like",<br>      "likes_count": 0<br>    },<br>    {<br>      "type": "haha",<br>      "hahas_count": 0<br>    },<br>    {<br>      "type": "angry",<br>      "angrys_count": 0<br>    },<br>    {<br>      "type": "love",<br>      "loves_count": 0<br>    },<br>    {<br>      "type": "sad",<br>      "sads_count": 0<br>    },<br>    {<br>      "type": "wow",<br>      "wows_count": 0<br>    },<br>    {<br>      "type": "yay",<br>      "yays_count": 0<br>    }<br>  ],<br>  "replies_total": 0,<br>  "score": "11486794868...</pre>
+                        </div>
+                    </td>
+                    <td><span class='text-success'>0.000 s</span></td>
+                    <td class="text-truncate">2025-07-17 16:49:56</td>
+                </tr>
+                
+                <tr>
+                    <td class="text-truncate">test_get_status_by_id</td>
+                    <td><span class='status-PASS'>PASS</span></td>
+                    <td>200</td>
+                    <td><a href='https://lab-sn.emso.vn/api/v1/statuses/114867948688442532' target='_blank' class='text-truncate' style='display: inline-block;'>https://lab-sn.emso.vn/api/v1/statuses/114867948688442532</a></td>
+                    <td>GET</td>
+                    <td>
+                        <button class='btn btn-sm btn-outline-primary' type='button' data-bs-toggle='collapse' data-bs-target='#headers4' aria-expanded='false' aria-controls='headers4'>
+                            Toggle Headers
+                        </button>
+                        <div class='collapse' id='headers4'>
+                            <pre class='mt-2 mb-0 text-wrap json-pretty'>{<br>  "accept": "application/json, text/plain, */*",<br>  "accept-language": "vi-VN,vi;q=0.9,fr-FR;q=0.8,fr;q=0.7,en-US;q=0.6,en;q=0.5",<br>  "origin": "https://lab-fe.emso.vn",<br>  "priority": "u=1, i",<br>  "referer": "https://lab-fe.emso.vn/",<br>  "sec-ch-ua": "\"Not)A;Brand\";v=\"8\", \"Chromium\";v=\"138\", \"Google Chrome\";v=\"138\"",<br>  "sec-ch-ua-mobile": "?0",<br>  "sec-ch-ua-platform": "\"Windows\"",<br>  "sec-fetch-dest": "empty",<br>  "sec-fetch-mode": "cors",<br>  "sec-fetch-site": "same-site",<br>  "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36",<br>  "authorization": "Bearer RywajiSwzcSA2cgQElYjOktuvBt2duWDPQqBomK5cMo"<br>}</pre>
+                        </div>
+                    </td>
+                    <td>
+                        <button class='btn btn-sm btn-outline-primary' type='button' data-bs-toggle='collapse' data-bs-target='#response4' aria-expanded='false' aria-controls='response4'>
+                            Toggle Response
+                        </button>
+                        <div class='collapse' id='response4'>
+                            <pre class='mt-2 mb-0 text-wrap json-pretty'>{<br>  "id": "114867948688442532",<br>  "created_at": "2025-07-17T16:49:59.205+07:00",<br>  "backdated_time": "2025-07-17T16:49:59.205+07:00",<br>  "backdated_timestamp": "114867948710646325",<br>  "in_reply_to_id": null,<br>  "in_reply_to_account_id": null,<br>  "share_product_or_course": null,<br>  "sensitive": false,<br>  "spoiler_text": "",<br>  "visibility": "public",<br>  "language": "vi",<br>  "post_type": "default",<br>  "share_status_account_id": "",<br>  "share_status_page_id": null,<br>  "replies_count": 0,<br>  "commenters_count": 0,<br>  "reblogers_count": 0,<br>  "off_comment": false,<br>  "reblogs_count": 0,<br>  "post_category_id": 288,<br>  "not_show_reblogs": false,<br>  "favourites_count": 0,<br>  "reactions": [<br>    {<br>      "type": "like",<br>      "likes_count": 0<br>    },<br>    {<br>      "type": "haha",<br>      "hahas_count": 0<br>    },<br>    {<br>      "type": "angry",<br>      "angrys_count": 0<br>    },<br>    {<br>      "type": "love",<br>      "loves_count": 0<br>    },<br>    {<br>      "type": "sad",<br>      "sads_count": 0<br>    },<br>    {<br>      "type": "wow",<br>      "wows...</pre>
+                        </div>
+                    </td>
+                    <td><span class='text-success'>0.000 s</span></td>
+                    <td class="text-truncate">2025-07-17 16:49:56</td>
+                </tr>
+                
+                <tr>
+                    <td class="text-truncate">test_delete_status_by_id</td>
+                    <td><span class='status-PASS'>PASS</span></td>
+                    <td>200</td>
+                    <td><a href='https://lab-sn.emso.vn/api/v1/statuses/114867948688442532' target='_blank' class='text-truncate' style='display: inline-block;'>https://lab-sn.emso.vn/api/v1/statuses/114867948688442532</a></td>
+                    <td>DELETE</td>
+                    <td>
+                        <button class='btn btn-sm btn-outline-primary' type='button' data-bs-toggle='collapse' data-bs-target='#headers5' aria-expanded='false' aria-controls='headers5'>
+                            Toggle Headers
+                        </button>
+                        <div class='collapse' id='headers5'>
+                            <pre class='mt-2 mb-0 text-wrap json-pretty'>{<br>  "accept": "application/json, text/plain, */*",<br>  "accept-language": "vi-VN,vi;q=0.9,fr-FR;q=0.8,fr;q=0.7,en-US;q=0.6,en;q=0.5",<br>  "origin": "https://lab-fe.emso.vn",<br>  "priority": "u=1, i",<br>  "referer": "https://lab-fe.emso.vn/",<br>  "sec-ch-ua": "\"Not)A;Brand\";v=\"8\", \"Chromium\";v=\"138\", \"Google Chrome\";v=\"138\"",<br>  "sec-ch-ua-mobile": "?0",<br>  "sec-ch-ua-platform": "\"Windows\"",<br>  "sec-fetch-dest": "empty",<br>  "sec-fetch-mode": "cors",<br>  "sec-fetch-site": "same-site",<br>  "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36",<br>  "authorization": "Bearer RywajiSwzcSA2cgQElYjOktuvBt2duWDPQqBomK5cMo"<br>}</pre>
+                        </div>
+                    </td>
+                    <td>
+                        <button class='btn btn-sm btn-outline-primary' type='button' data-bs-toggle='collapse' data-bs-target='#response5' aria-expanded='false' aria-controls='response5'>
+                            Toggle Response
+                        </button>
+                        <div class='collapse' id='response5'>
+                            <pre class='mt-2 mb-0 text-wrap json-pretty'>{<br>  "id": "114867948688442532",<br>  "created_at": "2025-07-17T16:49:59.205+07:00",<br>  "backdated_time": "2025-07-17T16:49:59.205+07:00",<br>  "backdated_timestamp": "114867948710646325",<br>  "in_reply_to_id": null,<br>  "in_reply_to_account_id": null,<br>  "share_product_or_course": null,<br>  "sensitive": false,<br>  "spoiler_text": "",<br>  "visibility": "public",<br>  "language": "vi",<br>  "post_type": "default",<br>  "share_status_account_id": "",<br>  "share_status_page_id": null,<br>  "replies_count": 0,<br>  "commenters_count": 0,<br>  "reblogers_count": 0,<br>  "off_comment": false,<br>  "reblogs_count": 0,<br>  "post_category_id": 288,<br>  "not_show_reblogs": false,<br>  "favourites_count": 0,<br>  "reactions": [<br>    {<br>      "type": "like",<br>      "likes_count": 0<br>    },<br>    {<br>      "type": "haha",<br>      "hahas_count": 0<br>    },<br>    {<br>      "type": "angry",<br>      "angrys_count": 0<br>    },<br>    {<br>      "type": "love",<br>      "loves_count": 0<br>    },<br>    {<br>      "type": "sad",<br>      "sads_count": 0<br>    },<br>    {<br>      "type": "wow",<br>      "wows...</pre>
+                        </div>
+                    </td>
+                    <td><span class='text-success'>0.000 s</span></td>
+                    <td class="text-truncate">2025-07-17 16:49:56</td>
+                </tr>
+                
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script>
+        
+                document.addEventListener('DOMContentLoaded', function() {
+                    const chart = document.querySelector('.plotly-graph-div');
+                    chart.on('plotly_click', function(data) {
+                        const status = data.points[0].label;
+                        if (status === 'No Results') return;
+                        const rows = document.querySelectorAll('#testTableBody tr');
+                        rows.forEach(row => {
+                            const statusCell = row.querySelector('td:nth-child(2) span').textContent;
+                            row.style.display = (status === statusCell) ? '' : 'none';
+                        });
+                    });
+                    document.querySelector('.container-fluid').addEventListener('click', function(e) {
+                        if (!e.target.closest('.plotly-graph-div')) {
+                            const rows = document.querySelectorAll('#testTableBody tr');
+                            rows.forEach(row => { row.style.display = ''; });
+                        }
+                    });
+                    $(document).ready(function() {
+                        $("#testTable").colResizable({
+                            liveDrag: true,
+                            gripInnerHtml: "<div class='grip'></div>",
+                            draggingClass: "dragging"
+                        });
+                    });
+                });
+            
+    </script>
+</body>
+</html>
